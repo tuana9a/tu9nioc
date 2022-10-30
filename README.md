@@ -13,7 +13,7 @@ npm install tu9nioc
 # Basic Usage
 
 ```js
-const tu9nioc = require("tu9nioc");
+const tu9nioc = require("tu9nioc/dist");
 
 class Test1 {
   test2;
@@ -42,7 +42,7 @@ console.log(test2.test3 == test3); // true
 # Ignore some props
 
 ```js
-const tu9nioc = require("tu9nioc");
+const tu9nioc = require("tu9nioc/dist");
 
 class Test1 {
   test2;
@@ -96,7 +96,7 @@ console.log(test1.test2); // undefined;
 `Test1.js`
 
 ```js
-const { ioc } = require("tu9nioc");
+const { ioc } = require("tu9nioc/dist");
 
 class Test1 {
   test2;
@@ -110,7 +110,7 @@ module.exports = Test1;
 `Test2.js`
 
 ```js
-const { ioc } = require("tu9nioc");
+const { ioc } = require("tu9nioc/dist");
 
 class Test2 {
   test1;
@@ -124,7 +124,7 @@ module.exports = Test2;
 `main.js`
 
 ```js
-const { ioc } = require("tu9nioc");
+const { ioc } = require("tu9nioc/dist");
 
 // need auto scan because of lazy load of nodejs
 ioc.autoScan(".", {
