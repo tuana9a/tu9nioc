@@ -26,9 +26,9 @@ class Test2 {
 class Test3 {}
 
 const ioc = new tu9nioc.IOCContainer();
-ioc.addBean(Test1, "test1");
-ioc.addBean(Test2, "test2");
-ioc.addBean(Test3, "test3");
+ioc.addClass(Test1, "test1");
+ioc.addClass(Test2, "test2");
+ioc.addClass(Test3, "test3");
 ioc.di();
 
 const test1 = ioc.getBean("test1").getInstance();
@@ -54,8 +54,8 @@ class Test2 {
 }
 
 const ioc = new tu9nioc.IOCContainer();
-ioc.addBean(Test1, "test1", { ignoreDeps: ["test3"] });
-ioc.addBean(Test2, "test2");
+ioc.addClass(Test1, "test1", { ignoreDeps: ["test3"] });
+ioc.addClass(Test2, "test2");
 ioc.di();
 
 const test1 = ioc.getBean("test1").getInstance();
@@ -79,8 +79,8 @@ class Test2 {
 }
 
 const ioc = new tu9nioc.IOCContainer();
-ioc.addBean(Test1, "test1", { ignoreDeps: ["test3", "__all"] });
-ioc.addBean(Test2, "test2");
+ioc.addClass(Test1, "test1", { ignoreDeps: ["test3", "__all"] });
+ioc.addClass(Test2, "test2");
 ioc.di();
 
 const test1 = ioc.getBean("test1").getInstance();
@@ -102,7 +102,7 @@ class Test1 {
   test2;
 }
 
-ioc.addBean(Test1, "test1");
+ioc.addClass(Test1, "test1");
 
 module.exports = Test1;
 ```
@@ -116,7 +116,7 @@ class Test2 {
   test1;
 }
 
-ioc.addBean(Test2, "test2");
+ioc.addClass(Test2, "test2");
 
 module.exports = Test2;
 ```
@@ -155,8 +155,8 @@ class Test2 {
 }
 
 const ioc = new tu9nioc.IOCContainer({ getter: true });
-ioc.addBean(Test1, "test1");
-ioc.addBean(Test2, "test2");
+ioc.addClass(Test1, "test1");
+ioc.addClass(Test2, "test2");
 ioc.di();
 
 const test1 = ioc.getBean("test1").getInstance();
@@ -183,8 +183,8 @@ const test3 = new Test2();
 test3.test1 = "not-a-real-test1";
 
 const ioc = new tu9nioc.IOCContainer({ setter: true });
-ioc.addBean(Test1, "test1");
-ioc.addBean(Test2, "test2");
+ioc.addClass(Test1, "test1");
+ioc.addClass(Test2, "test2");
 ioc.di();
 
 const test1 = ioc.getBean("test1").getInstance();

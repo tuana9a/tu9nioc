@@ -11,8 +11,8 @@ describe("test IocContainer", () => {
     }
 
     const ioc = new IocContainer();
-    ioc.addBean(Test1, "test1");
-    ioc.addBean(Test2, "test2");
+    ioc.addClass(Test1, "test1");
+    ioc.addClass(Test2, "test2");
     ioc.di();
 
     const test1 = ioc.getBean("test1").getInstance();
@@ -34,9 +34,9 @@ describe("test IocContainer", () => {
     class Test3 { }
 
     const ioc = new IocContainer();
-    ioc.addBean(Test1, "test1");
-    ioc.addBean(Test2, "test2");
-    ioc.addBean(Test3, "test3");
+    ioc.addClass(Test1, "test1");
+    ioc.addClass(Test2, "test2");
+    ioc.addClass(Test3, "test3");
     ioc.di();
 
     const test1 = ioc.getBean("test1").getInstance();
@@ -59,8 +59,8 @@ describe("test IocContainer", () => {
     let test1 = new Test1();
 
     const ioc = new IocContainer();
-    ioc.addBeanWithoutClass(test1, "test1");
-    ioc.addBean(Test2, "test2");
+    ioc.addBean(test1, "test1");
+    ioc.addClass(Test2, "test2");
     ioc.di();
 
     test1 = ioc.getBean("test1").getInstance();
@@ -81,8 +81,8 @@ describe("test IocContainer", () => {
     }
 
     const ioc = new IocContainer();
-    ioc.addBean(Test1, "test1", { ignoreDeps: ["test3"] });
-    ioc.addBean(Test2, "test2");
+    ioc.addClass(Test1, "test1", { ignoreDeps: ["test3"] });
+    ioc.addClass(Test2, "test2");
     ioc.di();
 
     const test1 = ioc.getBean("test1").getInstance();
@@ -122,8 +122,8 @@ describe("test IocContainer", () => {
     }
 
     const ioc = new IocContainer();
-    ioc.addBean(Test1, "test1", { ignoreDeps: ["test3", "__all"] });
-    ioc.addBean(Test2, "test2");
+    ioc.addClass(Test1, "test1", { ignoreDeps: ["test3", "__all"] });
+    ioc.addClass(Test2, "test2");
 
     expect(() => {
       ioc.di();
@@ -147,8 +147,8 @@ describe("test IocContainer", () => {
     }
 
     const ioc = new IocContainer({ getter: true });
-    ioc.addBean(Test1, "test1");
-    ioc.addBean(Test2, "test2");
+    ioc.addClass(Test1, "test1");
+    ioc.addClass(Test2, "test2");
     ioc.di();
 
     const test1 = ioc.getBean("test1").getInstance();
@@ -175,8 +175,8 @@ describe("test IocContainer", () => {
     test3.test1 = "not-a-real-test1";
 
     const ioc = new IocContainer({ setter: true });
-    ioc.addBean(Test1, "test1");
-    ioc.addBean(Test2, "test2");
+    ioc.addClass(Test1, "test1");
+    ioc.addClass(Test2, "test2");
     ioc.di();
 
     const test1 = ioc.getBean("test1").getInstance();

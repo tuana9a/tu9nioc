@@ -22,7 +22,7 @@ export default class IocContainer {
     return this.beanPool;
   }
 
-  addBeanWithoutClass(instance: Record<string, unknown>, name: string, opts?: AddBeanOpts) {
+  addBean(instance: any, name: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
 
     if (beanPool.has(name)) {
@@ -41,9 +41,9 @@ export default class IocContainer {
   /**
    * manually add existing instance to bean pool
    */
-  addBean(klass: unknown, name: string, opts?: AddBeanOpts) {
+  addClass(klass: any, name?: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
-
+    name = name || klass.name;
     if (beanPool.has(name)) {
       throw new BeanAlreadyExistError(name);
     }
