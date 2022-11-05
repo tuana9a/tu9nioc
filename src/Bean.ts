@@ -2,12 +2,12 @@ import BeanConstructOpts from "./types/BeanConstructOpts";
 import createSetterName from "./utils/createSetterName";
 import createGetterName from "./utils/createGetterName";
 
-export default class Bean {
+export default class Bean<T> {
   klass: any;
   name: string;
   dependOns: string[]; // TODO: in the future
   ignoreDeps: string[];
-  instance: any;
+  instance: T;
 
   constructor(opts?: BeanConstructOpts) {
     this.klass = opts?.klass;
@@ -44,7 +44,7 @@ export default class Bean {
     return this.ignoreDeps;
   }
 
-  injectTo(otherBean: Bean, injectOnProp?: string) {
+  injectTo(otherBean: Bean<any>, injectOnProp?: string) {
     injectOnProp = injectOnProp || this.name;
     const otherInstance = otherBean.getInstance();
     const thisInstance = this.getInstance();
@@ -52,16 +52,16 @@ export default class Bean {
     otherInstance[injectOnProp] = thisInstance;
   }
 
-  injectedBy(otherBean: Bean, injectOnProp: string) {
+  injectedBy(otherBean: Bean<any>, injectOnProp: string) {
     const otherInstance = otherBean.getInstance();
     const thisInstance = this.getInstance();
-    thisInstance[injectOnProp] = otherInstance;
+    (thisInstance as any)[injectOnProp] = otherInstance;
   }
 
   injectSetter(propName: string) {
     const thisInstance = this.getInstance();
     const methodName = createSetterName(propName);
-    thisInstance[methodName] = function (value: unknown) {
+    (thisInstance as any)[methodName] = function (value: unknown) {
       this[propName] = value;
     };
   }
@@ -69,7 +69,7 @@ export default class Bean {
   injectGetter(propName: string) {
     const thisInstance = this.getInstance();
     const methodName = createGetterName(propName);
-    thisInstance[methodName] = function () {
+    (thisInstance as any)[methodName] = function () {
       const value = this[propName];
       return value;
     };

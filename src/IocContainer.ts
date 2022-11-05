@@ -11,17 +11,20 @@ import walk from "./utils/walk";
 export default class IocContainer {
   beanPool: BeanPool;
   opts?: IocOpts;
-  errorBeans: Bean[];
+  errorBeans: Bean<any>[];
 
   constructor(opts?: IocOpts) {
     this.opts = opts;
-    this.beanPool = new Map();
+    this.beanPool = new Map<string, any>();
   }
 
   getBeanPool() {
     return this.beanPool;
   }
 
+  /**
+   * manually add existing instance to bean pool
+   */
   addBean(instance: any, name: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
 
@@ -38,9 +41,6 @@ export default class IocContainer {
     beanPool.set(name, bean);
   }
 
-  /**
-   * manually add existing instance to bean pool
-   */
   addClass(klass: any, name?: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
     name = name || klass.name;
@@ -57,17 +57,11 @@ export default class IocContainer {
     beanPool.set(name, bean);
   }
 
-  /**
-   * get a existing bean or return null if not exist
-   */
-  getBean(name: string) {
+  getBean<T>(name: string): Bean<T> {
     const beanPool = this.getBeanPool();
     return beanPool.get(name);
   }
 
-  /**
-   * auto scan then import to eliminate lazy load of node.js
-   */
   autoScan(dir: string, opts?: WalkOpts) {
     const files = walk(dir, opts);
     for (const filepath of files) {
