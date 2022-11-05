@@ -1,6 +1,6 @@
 {
   "name": "tu9nioc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "dependency injection for nodejs",
   "scripts": {
     "build": "tsc --declaration",
