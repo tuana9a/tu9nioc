@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { WalkOpts } from "./types";
+import { Klass, WalkOpts } from "./types";
+import _ from "lodash";
 
 export function walk(dir: string, opts: WalkOpts) {
   let results: string[] = [];
@@ -39,4 +40,12 @@ export function createGetterName(propName: string) {
 
 export function createSetterName(propName: string) {
   return "set" + propName.charAt(0).toUpperCase() + propName.slice(1);
+}
+
+export function toCamelCase(name: string | Klass) {
+  if ((name as Klass).name) {
+    const klassName = (name as Klass).name;
+    return _.camelCase(klassName);
+  }
+  return _.camelCase(name as string);
 }

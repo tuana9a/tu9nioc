@@ -2,7 +2,7 @@ import path from "path";
 import Bean from "./bean";
 import { BeanNotFoundError, BeanAlreadyExistError, BeanInstanceIsFalsyError } from "./errors";
 import { IocOpts, BeanPool, AddBeanOpts, WalkOpts, Instance, Klass } from "./types";
-import { walk } from "./utils";
+import { toCamelCase, walk } from "./utils";
 
 export default class IocContainer {
   beanPool: BeanPool;
@@ -39,7 +39,7 @@ export default class IocContainer {
 
   addClass(klass: Klass, name?: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
-    name = name || klass.name;
+    name = name || toCamelCase(klass);
     if (beanPool.has(name)) {
       throw new BeanAlreadyExistError(name);
     }
@@ -53,9 +53,12 @@ export default class IocContainer {
     beanPool.set(name, bean);
   }
 
-  getBean(name: string): Bean {
+  getBean(name: string | Klass): Bean {
     const beanPool = this.getBeanPool();
-    return beanPool.get(name);
+    if ((name as Klass).name) {
+      return beanPool.get(toCamelCase(name));
+    }
+    return beanPool.get(name as string);
   }
 
   autoScan(dir: string, opts?: WalkOpts) {

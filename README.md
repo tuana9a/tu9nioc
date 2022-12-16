@@ -24,23 +24,23 @@ class Test1 {
 }
 
 class Test2 {
-  test3;
+  test3WithOtherName;
 }
 
 class Test3 {}
 
 const ioc = new tu9nioc.IOCContainer();
-ioc.addClass(Test1, "test1");
-ioc.addClass(Test2, "test2");
-ioc.addClass(Test3, "test3");
+ioc.addClass(Test1); // default name = "test1"
+ioc.addClass(Test2, "test2"); // manually set name
+ioc.addClass(Test3, "test3WithOtherName");
 ioc.di(); // start dependency injection
 
 const test1 = ioc.getBean("test1").getInstance();
-const test2 = ioc.getBean("test2").getInstance();
-const test3 = ioc.getBean("test3").getInstance();
+const test2 = ioc.getBean(Test2).getInstance(); // get bean by it's class
+const test3 = ioc.getBean("test3WithOtherName").getInstance();
 
 console.log(test1.test2 == test2); // true
-console.log(test2.test3 == test3); // true
+console.log(test2.test3WithOtherName == test3); // true
 ```
 
 ### ignore props
@@ -200,4 +200,51 @@ console.log(test1.test2 == test2); // true
 console.log(test2.test1 == test1); // true
 test1.setTest2(test3);
 console.log(test1.test2.test1 == "not-a-real-test1"); // true
+```
+
+## typescript
+
+`Class1.ts`
+
+```ts
+import { ioc } from "tu9nioc";
+import { Class2 } from "./Class2";
+
+export class Class1 {
+  class3: Class3; // NOT WORK
+
+  constructor(public class2: Class2 /* OK */) { }
+}
+
+ioc.addClass(Class1);
+```
+
+`Class2.ts`
+
+```ts
+import { ioc } from "tu9nioc";
+import { Class1 } from "./Class1";
+
+export class Class2 {
+  constructor(public class1: Class1) { }
+}
+
+ioc.addClass(Class2);
+```
+
+`index.ts`
+
+```ts
+import { ioc } from "tu9nioc";
+import { Class1 } from "./Class1";
+import { Class2 } from "./Class2";
+
+ioc.autoScan(__dirname);
+ioc.di();
+
+const c1: Class1 = ioc.getBean("class1").getInstance();
+const c2: Class2 = ioc.getBean(Class2).getInstance();
+
+console.log(c1.class2 == c2); // true
+console.log(c2.class1 == c1); // true
 ```

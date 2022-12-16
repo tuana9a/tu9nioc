@@ -28,7 +28,7 @@ describe("test IocContainer", () => {
     }
 
     class Test2 {
-      test3;
+      test3WithOtherName;
     }
 
     class Test3 { }
@@ -36,15 +36,15 @@ describe("test IocContainer", () => {
     const ioc = new IocContainer();
     ioc.addClass(Test1, "test1");
     ioc.addClass(Test2, "test2");
-    ioc.addClass(Test3, "test3");
+    ioc.addClass(Test3, "test3WithOtherName");
     ioc.di();
 
     const test1 = ioc.getBean("test1").getInstance();
-    const test2 = ioc.getBean("test2").getInstance();
-    const test3 = ioc.getBean("test3").getInstance();
+    const test2 = ioc.getBean(Test2).getInstance();
+    const test3 = ioc.getBean("test3WithOtherName").getInstance();
 
     expect(test1.test2).toBe(test2);
-    expect(test2.test3).toBe(test3);
+    expect(test2.test3WithOtherName).toBe(test3);
   });
 
   test("add bean manually", () => {
@@ -190,5 +190,30 @@ describe("test IocContainer", () => {
       test1.setTest2(test3);
       expect(test1.test2.test1).toBe("not-a-real-test1");
     }).not.toThrow();
+  });
+
+  test("auto name from Klass", () => {
+    class Test1 {
+      test2;
+    }
+
+    class Test2 {
+      test3;
+    }
+
+    class Test3 { }
+
+    const ioc = new IocContainer();
+    ioc.addClass(Test1);
+    ioc.addClass(Test2);
+    ioc.addClass(Test3);
+    ioc.di();
+
+    const test1 = ioc.getBean("test1").getInstance();
+    const test2 = ioc.getBean("test2").getInstance();
+    const test3 = ioc.getBean("test3").getInstance();
+
+    expect(test1.test2).toBe(test2);
+    expect(test2.test3).toBe(test3);
   });
 });
