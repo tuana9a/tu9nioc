@@ -60,7 +60,6 @@ export default class IocContainer {
 
   autoScan(dir: string, opts?: WalkOpts) {
     const absoluteDir = path.resolve(dir);
-    console.log(`[INFO] ioc.autoScan "${absoluteDir}"`);
     const files = walk(absoluteDir, opts);
     for (const filepath of files) {
       require(filepath);

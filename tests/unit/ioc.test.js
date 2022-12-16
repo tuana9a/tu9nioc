@@ -105,10 +105,12 @@ describe("test IocContainer", () => {
 
     const test1 = ioc.getBean("test1").getInstance();
     const test2 = ioc.getBean("test2").getInstance();
+    const test3 = ioc.getBean("test3").getInstance();
 
     expect(test2.test1).toBe(test1);
     expect(test1.test2).toBe(test2);
     expect(test1.test3).toBeFalsy();
+    expect(test3.test2).toBe(test2);
   });
 
   test("allow to ignore all missing deps", () => {

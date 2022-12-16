@@ -1,16 +1,20 @@
 # tu9nioc
 
-tua**na**9a **N**odejs **I**nversion **o**f **C**ontrol
+tua**na**9a **N**odeJS **I**nversion **o**f **C**ontrol
 
-A simple dependency injection for nodejs
+a dependency injection for nodejs
 
-# Installing
+# installing
 
 ```bash
 npm install tu9nioc
 ```
 
-# Basic Usage
+# how to use
+
+## raw nodejs
+
+### basic
 
 ```js
 const tu9nioc = require("tu9nioc");
@@ -29,7 +33,7 @@ const ioc = new tu9nioc.IOCContainer();
 ioc.addClass(Test1, "test1");
 ioc.addClass(Test2, "test2");
 ioc.addClass(Test3, "test3");
-ioc.di();
+ioc.di(); // start dependency injection
 
 const test1 = ioc.getBean("test1").getInstance();
 const test2 = ioc.getBean("test2").getInstance();
@@ -39,7 +43,9 @@ console.log(test1.test2 == test2); // true
 console.log(test2.test3 == test3); // true
 ```
 
-# Ignore some props
+### ignore props
+
+ignore one
 
 ```js
 const tu9nioc = require("tu9nioc");
@@ -66,7 +72,7 @@ console.log(test2.test1 == test1); // true
 console.log(test1.test3); // undefined
 ```
 
-or ignore all
+ignore all
 
 ```js
 class Test1 {
@@ -79,7 +85,7 @@ class Test2 {
 }
 
 const ioc = new tu9nioc.IOCContainer();
-ioc.addClass(Test1, "test1", { ignoreDeps: ["test3", "__all"] });
+ioc.addClass(Test1, "test1", { ignoreDeps: ["__all"] });
 ioc.addClass(Test2, "test2");
 ioc.di();
 
@@ -91,7 +97,7 @@ console.log(test1.test3); // undefined;
 console.log(test1.test2); // undefined;
 ```
 
-# Auto scan using global ioc
+### auto scan using global ioc
 
 `Test1.js`
 
@@ -141,7 +147,7 @@ console.log(test1.test2 == test2); // true
 console.log(test2.test1 == test1); // true
 ```
 
-# Inject getter and setter
+### inject getter and setter
 
 getter
 
