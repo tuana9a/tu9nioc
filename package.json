@@ -1,9 +1,10 @@
 {
   "name": "tu9nioc",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "dependency injection for nodejs",
   "scripts": {
     "build": "tsc --declaration",
+    "build:watch": "tsc --watch --declaration",
     "test": "jest tests",
     "test:watch": "jest --watch tests"
   },

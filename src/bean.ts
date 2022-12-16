@@ -1,13 +1,12 @@
-import BeanConstructOpts from "./types/BeanConstructOpts";
-import createSetterName from "./utils/createSetterName";
-import createGetterName from "./utils/createGetterName";
+import { BeanConstructOpts, Instance, Klass } from "./types";
+import { createSetterName, createGetterName } from "./utils";
 
-export default class Bean<T> {
-  klass: any;
+export default class Bean {
+  klass: Klass;
   name: string;
   dependOns: string[]; // TODO: in the future
   ignoreDeps: string[];
-  instance: T;
+  instance: Instance;
 
   constructor(opts?: BeanConstructOpts) {
     this.klass = opts?.klass;
@@ -24,7 +23,7 @@ export default class Bean<T> {
     return this.instance;
   }
 
-  setInstance(instance: any) {
+  setInstance(instance: Instance) {
     this.instance = instance;
   }
 
@@ -44,7 +43,7 @@ export default class Bean<T> {
     return this.ignoreDeps;
   }
 
-  injectTo(otherBean: Bean<any>, injectOnProp?: string) {
+  injectTo(otherBean: Bean, injectOnProp?: string) {
     injectOnProp = injectOnProp || this.name;
     const otherInstance = otherBean.getInstance();
     const thisInstance = this.getInstance();
@@ -52,16 +51,16 @@ export default class Bean<T> {
     otherInstance[injectOnProp] = thisInstance;
   }
 
-  injectedBy(otherBean: Bean<any>, injectOnProp: string) {
+  injectedBy(otherBean: Bean, injectOnProp: string) {
     const otherInstance = otherBean.getInstance();
     const thisInstance = this.getInstance();
-    (thisInstance as any)[injectOnProp] = otherInstance;
+    thisInstance[injectOnProp] = otherInstance;
   }
 
   injectSetter(propName: string) {
     const thisInstance = this.getInstance();
     const methodName = createSetterName(propName);
-    (thisInstance as any)[methodName] = function (value: unknown) {
+    thisInstance[methodName] = function (value: unknown) {
       this[propName] = value;
     };
   }
@@ -69,7 +68,7 @@ export default class Bean<T> {
   injectGetter(propName: string) {
     const thisInstance = this.getInstance();
     const methodName = createGetterName(propName);
-    (thisInstance as any)[methodName] = function () {
+    thisInstance[methodName] = function () {
       const value = this[propName];
       return value;
     };

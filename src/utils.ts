@@ -1,15 +1,15 @@
 import fs from "fs";
 import path from "path";
-import WalkOpts from "src/types/WalkOpts";
+import { WalkOpts } from "./types";
 
-export default function walk(dir: string, opts: WalkOpts) {
+export function walk(dir: string, opts: WalkOpts) {
   let results: string[] = [];
   const filepaths = fs.readdirSync(dir);
-  
+
   for (const originFilePath of filepaths) {
     const filepath = opts?.absolute ? path.resolve(dir, originFilePath) : path.join(dir, originFilePath);
     const stat = fs.statSync(filepath);
-  
+
     if (stat.isDirectory()) {
       if (opts?.dirNameFilter) {
         if (opts?.dirNameFilter(originFilePath)) {
@@ -31,4 +31,12 @@ export default function walk(dir: string, opts: WalkOpts) {
     }
   }
   return results;
+}
+
+export function createGetterName(propName: string) {
+  return "get" + propName.charAt(0).toUpperCase() + propName.slice(1);
+}
+
+export function createSetterName(propName: string) {
+  return "set" + propName.charAt(0).toUpperCase() + propName.slice(1);
 }

@@ -1,21 +1,17 @@
-import Bean from "./Bean";
-import BeanInstanceIsFalsyError from "./errors/BeanInstanceIsFalsyError";
-import BeanAlreadyExistError from "./errors/BeanAlreadyExistError";
-import BeanNotFoundError from "./errors/BeanNotFoundError";
-import AddBeanOpts from "./types/AddBeanOpts";
-import BeanPool from "./types/BeanPool";
-import IocOpts from "./types/IocOpts";
-import WalkOpts from "./types/WalkOpts";
-import walk from "./utils/walk";
+import path from "path";
+import Bean from "./bean";
+import { BeanNotFoundError, BeanAlreadyExistError, BeanInstanceIsFalsyError } from "./errors";
+import { IocOpts, BeanPool, AddBeanOpts, WalkOpts, Instance, Klass } from "./types";
+import { walk } from "./utils";
 
 export default class IocContainer {
   beanPool: BeanPool;
   opts?: IocOpts;
-  errorBeans: Bean<any>[];
+  errorBeans: Bean[];
 
   constructor(opts?: IocOpts) {
     this.opts = opts;
-    this.beanPool = new Map<string, any>();
+    this.beanPool = new Map<string, Bean>();
   }
 
   getBeanPool() {
@@ -25,7 +21,7 @@ export default class IocContainer {
   /**
    * manually add existing instance to bean pool
    */
-  addBean(instance: any, name: string, opts?: AddBeanOpts) {
+  addBean(instance: Instance, name: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
 
     if (beanPool.has(name)) {
@@ -41,7 +37,7 @@ export default class IocContainer {
     beanPool.set(name, bean);
   }
 
-  addClass(klass: any, name?: string, opts?: AddBeanOpts) {
+  addClass(klass: Klass, name?: string, opts?: AddBeanOpts) {
     const beanPool = this.getBeanPool();
     name = name || klass.name;
     if (beanPool.has(name)) {
@@ -57,13 +53,15 @@ export default class IocContainer {
     beanPool.set(name, bean);
   }
 
-  getBean<T>(name: string): Bean<T> {
+  getBean(name: string): Bean {
     const beanPool = this.getBeanPool();
     return beanPool.get(name);
   }
 
   autoScan(dir: string, opts?: WalkOpts) {
-    const files = walk(dir, opts);
+    const absoluteDir = path.resolve(dir);
+    console.log(`[INFO] ioc.autoScan "${absoluteDir}"`);
+    const files = walk(absoluteDir, opts);
     for (const filepath of files) {
       require(filepath);
     }

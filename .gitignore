@@ -105,3 +105,4 @@ typings/
 # @tuana9a
 dist/
 build/
+*tmp*
