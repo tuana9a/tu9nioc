@@ -248,3 +248,58 @@ const c2: Class2 = ioc.getBean(Class2).getInstance();
 console.log(c1.class2 == c2); // true
 console.log(c2.class1 == c1); // true
 ```
+
+### annotation support
+
+**IMPORTANT** set `experimentalDecorators` to true
+
+```json
+{
+  "compilerOptions": {
+    ...
+    "experimentalDecorators": true
+  },
+  ...
+}
+```
+
+`Class1.ts`
+
+```ts
+import { Component } from "tu9nioc";
+import { Class2 } from "./Class2";
+
+@Component
+export class Class1 {
+  constructor(public class2: Class2) { }
+}
+```
+
+`Class2.ts`
+
+```ts
+import { Component } from "tu9nioc";
+import { Class1 } from "./Class1";
+
+@Component
+export class Class2 {
+  constructor(public class1: Class1) { }
+}
+```
+
+`index.ts`
+
+```ts
+import { ioc } from "tu9nioc";
+import { Class1 } from "./Class1";
+import { Class2 } from "./Class2";
+
+ioc.scan(__dirname);
+ioc.di();
+
+const c1: Class1 = ioc.getBean("class1").getInstance();
+const c2: Class2 = ioc.getBean(Class2).getInstance();
+
+console.log(c1.class2 == c2); // true
+console.log(c2.class1 == c1); // true
+```

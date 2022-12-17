@@ -61,7 +61,21 @@ export default class IocContainer {
     return beanPool.get(name as string);
   }
 
+  /**
+   * @deprecated use .scan(dir: string, opts: WalkOpts) instead
+   */
   autoScan(dir: string, opts?: WalkOpts) {
+    const absoluteDir = path.resolve(dir);
+    const files = walk(absoluteDir, opts);
+    for (const filepath of files) {
+      require(filepath);
+    }
+  }
+
+  /**
+   * mindless"ly" import file to take beans into memory
+   */
+  scan(dir: string, opts: WalkOpts = { fileNameFilter: (name: string) => Boolean(name.match(/^.*\.js$/)) }) {
     const absoluteDir = path.resolve(dir);
     const files = walk(absoluteDir, opts);
     for (const filepath of files) {
