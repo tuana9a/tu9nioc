@@ -32,7 +32,7 @@ export interface IocOpts {
 
 export interface WalkOpts {
   absolute?: boolean;
-  fileNameFilter?(fileName: string): boolean;
-  dirNameFilter?(dirName: string): boolean;
+  fileNameFilter?(fileName: string): boolean | RegExpMatchArray | null;
+  dirNameFilter?(dirName: string): boolean | RegExpMatchArray | null;
 }
 

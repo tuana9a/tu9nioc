@@ -75,7 +75,7 @@ export default class IocContainer {
   /**
    * mindless"ly" import file to take beans into memory
    */
-  scan(dir: string, opts: WalkOpts = { fileNameFilter: (name: string) => Boolean(name.match(/^.*\.js$/)) }) {
+  scan(dir: string, opts: WalkOpts = { fileNameFilter: (name: string) => name.match(/^.*\.js$/) }) {
     const absoluteDir = path.resolve(dir);
     const files = walk(absoluteDir, opts);
     for (const filepath of files) {

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "target": "ES2020",
+    "experimentalDecorators": true, /*TODO: watch typescript to remove if it officially support*/
+  },
+  "include": [
+    "ts/**/*.ts",
+  ],
+  "exclude": []
+}
